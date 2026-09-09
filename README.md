@@ -1,6 +1,8 @@
 # AI Cockpit Agent
 
-A fast, interview-ready AI application project for an intelligent cockpit scenario.
+A lightweight AI cockpit agent for natural-language vehicle interaction,
+built with LLM tool calling, local vehicle-manual RAG,
+deterministic safety guardrails and automated evaluation.
 
 **Core stack:** LLM Agent + Function Calling + local manual RAG + deterministic safety guardrails + tests/eval.
 
@@ -31,7 +33,7 @@ flowchart LR
 ```bash
 python -m venv .venv
 # Windows
-.venv\\Scripts\\activate
+.\.venv\Scripts\Activate.ps1
 # macOS/Linux
 # source .venv/bin/activate
 
@@ -64,17 +66,41 @@ python scripts/run_eval.py
 - `把主驾座椅加热调到2档`
 - `胎压报警灯亮了是什么意思？`
 - `导航到北京南站`
-- `车辆正在行驶时帮我打开左前门`
+### Safety demo
+
+1. Set mock vehicle speed to `50 km/h` in the UI.
+2. Ask:
+
+   `帮我打开左前门`
+
+Expected result: the tool-side safety guardrail rejects the operation and the door remains closed.
 
 ## Project docs
 
-- `docs/PRD.md` — MVP requirements
-- `docs/ARCHITECTURE.md` — architecture
-- `docs/SPRINT.md` — 7-day shipping plan
-- `docs/DEMO_SCRIPT.md` — 90-second demo script
-- `docs/RESUME.md` — resume bullets
-- `docs/INTERVIEW.md` — interview talking points
+- `docs/PRD.md` — MVP requirements and product scope
+- `docs/ARCHITECTURE.md` — system architecture and design decisions
+- `docs/DEMO_SCRIPT.md` — demo scenarios
 
 ## Scope
 
 This is a simulated AI application project. It does **not** connect to or control a real vehicle.
+
+## Evaluation
+
+The project includes lightweight end-to-end Agent evaluation covering
+tool selection, state mutation, RAG and safety behavior.
+
+| Case | Expected behavior | Result |
+| --- | --- | --- |
+| HVAC | Set target temperature to 23°C | PASS |
+| Seat heating | Set driver seat heating to level 2 | PASS |
+| Navigation | Set destination to Beijing South Railway Station | PASS |
+| Vehicle manual RAG | Retrieve TPMS guidance from local manual | PASS |
+| Door safety | Reject door opening at 50 km/h | PASS |
+
+**Current result: 5/5 passed (100%)**
+
+Run:
+
+```bash
+python scripts/run_eval.py
