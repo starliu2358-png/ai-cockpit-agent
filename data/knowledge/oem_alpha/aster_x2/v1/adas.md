@@ -1,12 +1,12 @@
 ---
 document_id: oem_alpha_aster_x2_v1_adas
 document_version: "1.0"
-content_type: owner_manual
+content_type: adas
 status: published
 locale: zh-CN
 oem_id: OEM_ALPHA
 model_id: ASTER_X2
-software_version: v1
+software_version: "1.0"
 content_origin: synthetic_original
 ---
 
@@ -16,7 +16,7 @@ content_origin: synthetic_original
 
 ## LCC
 
-车道居中辅助（LCC）的工作车速范围为 55–135 km/h。ACC 激活且驾驶员监测可用时，向下拨动右侧换挡拨杆两次启用 LCC。紫色方向盘图标表示 LCC 正在辅助。
+车道居中辅助（LCC）的工作车速范围为 0–130 km/h。ACC 激活且驾驶员监测可用时，向下拨动右侧换挡拨杆两次启用 LCC。紫色方向盘图标表示 LCC 正在辅助。
 
 ## ACC
 

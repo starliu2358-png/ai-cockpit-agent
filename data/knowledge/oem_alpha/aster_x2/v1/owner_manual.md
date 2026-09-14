@@ -6,7 +6,7 @@ status: published
 locale: zh-CN
 oem_id: OEM_ALPHA
 model_id: ASTER_X2
-software_version: v1
+software_version: "1.0"
 content_origin: synthetic_original
 ---
 
@@ -20,11 +20,15 @@ ASTER_X2 v1 配备双区自动空调，驾驶员和前排乘客可分别设置 1
 
 ## Seat ventilation
 
-主驾驶和副驾驶座椅均配备通风，各支持 1、2、3 共 3 档。路径为“座舱 > 座椅”。ASTER_X2 v1 不提供自动通风模式。
+座椅通风在 PRO 和 MAX 配置提供。本 MAX 测试车型的主驾驶和副驾驶座椅均支持 1、2、3 共 3 档，路径为“座舱 > 座椅”。ASTER_X2 v1 不提供自动通风模式。
+
+## Seat heating
+
+ASTER_X2 v1 的主驾驶、副驾驶和两个后排外侧座椅均支持 1、2、3 共 3 档加热。路径为“座舱 > 座椅 > 加热”。该版本不提供自动座椅加热。
 
 ## Battery and charging
 
-车辆配备 82 kWh NMC 动力电池。交流充电最大功率为 11 kW，直流充电最大功率为 180 kW。充电上限可在 50%–100% 间以 5% 为步长设置，默认值为 80%。导航到快充站时，系统自动进行电池预调节，无需手动开启。
+车辆配备 90 kWh NMC 动力电池。交流充电最大功率为 11 kW，直流充电最大功率为 240 kW。充电上限可在 50%–100% 间以 5% 为步长设置，默认值为 80%。导航到快充站时，系统自动进行电池预调节，无需手动开启。
 
 ## Warning lights
 

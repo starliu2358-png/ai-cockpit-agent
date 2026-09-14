@@ -6,7 +6,7 @@ status: published
 locale: zh-CN
 oem_id: OEM_ALPHA
 model_id: ASTER_X1
-software_version: v1
+software_version: "1.0"
 content_origin: synthetic_original
 ---
 
@@ -20,9 +20,10 @@ content_origin: synthetic_original
 | ACC | Supported; 30–150 km/h; 3 distance levels |
 | AEB | Vehicle 8–80 km/h; pedestrian 8–50 km/h |
 | HPA | Not supported |
-| Seat ventilation | Driver only; levels 1–2; no Auto mode |
+| Seat ventilation | MAX trim only; driver seat; levels 1–2; no Auto mode |
+| Seat heating | MAX trim; driver and passenger; levels 1–3; no Auto mode |
 | HVAC | Single-zone; 17°C–29°C; no scheduled preconditioning |
-| Battery | 68 kWh LFP; AC 7 kW; DC 120 kW |
+| Battery | 75 kWh LFP; AC 7 kW; DC 150 kW |
 | Charge limit | 50%–100%; 10% steps; default 90% |
 
 ## Version discriminator

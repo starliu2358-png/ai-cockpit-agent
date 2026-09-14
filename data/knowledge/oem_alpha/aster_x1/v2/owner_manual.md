@@ -6,7 +6,7 @@ status: published
 locale: zh-CN
 oem_id: OEM_ALPHA
 model_id: ASTER_X1
-software_version: v2
+software_version: "2.0"
 supersedes: oem_alpha_aster_x1_v1_owner_manual@1.0
 content_origin: synthetic_original
 ---
@@ -21,11 +21,15 @@ ASTER_X1 v2 仍使用单区自动空调，目标温度范围仍为 17°C–29°C
 
 ## Seat ventilation
 
-硬件仍为仅主驾驶座椅通风。除 1 档和 2 档外，v2 新增“自动”模式，路径为“应用 > 舒适座舱 > 座椅 > 主驾通风”。副驾驶座椅仍不支持通风。
+座椅通风仍仅在 MAX 配置提供。本 MAX 测试车型的主驾驶座椅除 1 档和 2 档外，v2 新增“自动”模式，路径为“应用 > 舒适座舱 > 座椅 > 主驾通风”。副驾驶座椅仍不支持通风。
+
+## Seat heating
+
+MAX 配置的主驾驶和副驾驶座椅均支持 1、2、3 共 3 档加热。v2 新增自动座椅加热，可在座舱温度低于 10°C 时启用；路径为“应用 > 舒适座舱 > 座椅 > 自动加热”。
 
 ## Battery and charging
 
-车辆仍配备 68 kWh LFP 动力电池，交流最大 7 kW，直流最大 120 kW。v2 的充电上限路径改为“能源 > 充电设置 > 目标电量”，范围为 40%–100%，步长为 5%，默认值为 80%。导航到快充站时，v2 可自动启动电池预热。
+车辆仍配备 75 kWh LFP 动力电池，交流最大 7 kW，直流最大 180 kW。v2 的充电上限路径改为“能源 > 充电设置 > 目标电量”，范围为 40%–100%，步长为 5%，默认值为 80%。导航到快充站时，v2 可自动启动电池预热。
 
 ## Warning lights
 

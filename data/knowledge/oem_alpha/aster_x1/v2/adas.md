@@ -1,12 +1,12 @@
 ---
 document_id: oem_alpha_aster_x1_v2_adas
 document_version: "2.0"
-content_type: owner_manual
+content_type: adas
 status: published
 locale: zh-CN
 oem_id: OEM_ALPHA
 model_id: ASTER_X1
-software_version: v2
+software_version: "2.0"
 supersedes: oem_alpha_aster_x1_v1_adas@1.0
 content_origin: synthetic_original
 ---
