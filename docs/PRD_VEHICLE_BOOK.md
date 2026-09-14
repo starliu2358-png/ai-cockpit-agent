@@ -6,7 +6,11 @@
 > Repository baseline: `baseline-cockpit-agent`  
 > Last updated: 2026-09-14
 
-## 1. Product summary
+本文档包含[中文版](#中文版)和[English Version](#english-version)。两种语言描述同一产品范围；后续变更应同步维护两种语言。
+
+# 中文版
+
+## 1. 产品概述
 
 车书是一个面向车主、售后支持人员和汽车知识运营人员的车辆知识助手。它根据用户当前选择的品牌、车型、年款、配置和软件版本，从本地模拟知识库中检索适用内容，给出带来源和适用范围的回答；同时为知识维护、检索评估、内容质量治理和发布门禁提供一套可演示的闭环。
 
@@ -14,7 +18,7 @@
 
 一句话定位：**能先确认“你问的是哪一辆车、哪个版本”，再基于匹配资料回答并说明依据的车辆知识助手。**
 
-## 2. Background and opportunity
+## 2. 背景与问题陈述
 
 车辆知识天然具有强上下文依赖。同一问题的答案可能因 OEM、车型、年款、市场、动力类型、配置、选装包或车机软件版本不同而变化。仅把多份手册放入通用向量库，会带来几类典型风险：
 
@@ -26,9 +30,9 @@
 
 该项目的作品集价值不在于模拟一个“全知车载聊天框”，而在于展示一套可解释的产品与工程方法：车辆身份解析、元数据过滤、分层检索、证据约束生成、知识版本控制、离线评估、内容治理和发布质量门禁。
 
-## 3. Goals and success definition
+## 3. 产品目标与成功标准
 
-### 3.1 Product goals
+### 3.1 产品目标
 
 1. 支持多个模拟 OEM、车型、年款、配置和软件版本的车辆知识问答。
 2. 在检索前解析车辆上下文，并优先使用严格匹配的知识，降低跨车、跨配置和跨版本误答。
@@ -37,7 +41,7 @@
 5. 建立从内容入库、校验、评估到发布的模拟知识治理流程。
 6. 用可复现的测试集和质量门禁证明迭代没有破坏关键能力。
 
-### 3.2 Portfolio success
+### 3.2 作品集成功标准
 
 项目演示应让评审者在 3–5 分钟内看清以下能力：
 
@@ -47,11 +51,11 @@
 - 错误或冲突内容能够被治理流程拦截。
 - 变更前后可通过离线 Eval 报告比较，发布由明确阈值决定。
 
-### 3.3 Non-goals as success constraints
+### 3.3 以非目标约束成功边界
 
 “看起来像生产系统”不是目标。所有车辆、文档、版本、账号、工单和发布流程均为本地模拟数据或测试夹具；界面必须持续展示这一边界，不得暗示已连接真实 OEM、车辆或售后系统。
 
-## 4. User personas
+## 4. 用户画像与痛点
 
 ### P1：车主 / 潜在车主
 
@@ -76,7 +80,7 @@
 - 场景：审查作品集的系统设计、RAG 质量、测试方法和产品边界。
 - 需求：能够复现实验、查看失败案例，并区分已实现能力与规划能力。
 
-## 5. User stories
+## 5. 用户故事
 
 | ID | Persona | User story | Acceptance summary |
 | --- | --- | --- | --- |
@@ -91,9 +95,9 @@
 | US-09 | 评审者 | 我希望一键运行单元测试和离线 Eval，复现项目声明的指标。 | 仓库内命令、固定数据集和结果格式明确。 |
 | US-10 | 车主 | 对安全或维修高风险问题，我希望得到谨慎且不越界的建议。 | 不提供无证据诊断；建议安全停车、查阅适用资料或联系专业服务。 |
 
-## 6. Scope
+## 6. 产品范围
 
-### 6.1 MVP scope
+### 6.1 MVP 范围
 
 - 使用本地模拟资料覆盖至少 2 个虚构 OEM、每个 OEM 至少 2 个车型，并包含可验证的配置或软件版本差异。
 - 提供显式车辆选择器，并在会话中保存当前车辆上下文。
@@ -105,7 +109,7 @@
 - 建立检索级与回答级离线评估集、切片指标、回归对比和发布质量门禁。
 - 保留现有 Mock Vehicle State、Tool Calling 和安全 Guardrail，作为“知识问答 + 有限模拟操作”的次要能力。
 
-### 6.2 Non-scope
+### 6.2 非目标
 
 - 不接入真实车辆 CAN、SOME/IP、DDS、车云平台或远程控车能力。
 - 不接入真实 OEM 内容管理系统、经销商系统、工单、VIN 服务或账号体系。
@@ -116,7 +120,7 @@
 - 不做语音 ASR/TTS、高保真车机 HMI、移动 App 或真实多租户权限系统。
 - 不将“联网搜索”作为车辆事实的默认兜底来源。
 
-## 7. Product principles
+## 7. 产品原则
 
 1. **Vehicle context before answer**：先确定车辆适用范围，再检索和生成。
 2. **Metadata is a hard boundary**：OEM、车型、市场等硬约束不能仅靠相关性分数覆盖。
@@ -126,9 +130,9 @@
 6. **Evaluation by slices**：总体平均分不能掩盖某 OEM、车型、版本或风险类别的失败。
 7. **Simulated honestly**：所有界面、文档和演示均明确标注 Mock / Simulated。
 
-## 8. Core flows
+## 8. 核心流程
 
-### 8.1 Vehicle-scoped Q&A
+### 8.1 基于车辆上下文的问答
 
 1. 用户从预置目录选择 OEM → 车型 → 年款 → 配置 → 市场 → 软件版本。
 2. 系统生成规范化 `vehicle_context` 并展示在会话顶部。
@@ -138,21 +142,21 @@
 6. 回答模块只根据合格证据生成答案，并附引用、适用范围和置信状态。
 7. 用户可展开“为什么是这个答案”，查看命中章节、版本和过滤摘要。
 
-### 8.2 Missing-context clarification
+### 8.2 上下文缺失澄清
 
 1. 用户未选择车辆，或问题涉及一个会改变答案但尚未提供的字段。
 2. 系统检查候选内容是否存在多种互斥答案。
 3. 若存在歧义，系统提出一个最小化澄清问题，例如车型、配置或软件版本。
 4. 用户补充后更新会话上下文并重新检索；若无法补充，则仅提供明确标注的通用信息或说明无法确认。
 
-### 8.3 Version-aware answer and controlled fallback
+### 8.3 版本感知回答与受控回退
 
 1. 系统优先匹配目标软件版本和目标文档的有效期。
 2. 若无精确版本内容，可按已声明的兼容关系查找同一版本系列或最近的较低兼容版本。
 3. 任何回退都必须在答案中显式说明“未找到精确版本资料”、实际引用版本及可能差异。
 4. 不得跨 OEM、车型或市场自动回退；不得将更高软件版本内容默认用于更低版本。
 
-### 8.4 Knowledge ingestion and review
+### 8.4 知识入库与审核
 
 1. 内容管理员添加本地模拟 Markdown/JSON 文档及其 manifest。
 2. 系统校验必填元数据、枚举值、版本格式、有效期、重复 ID、引用锚点和内容完整性。
@@ -161,7 +165,7 @@
 5. 管理员查看覆盖、冲突和变更摘要，运行离线 Eval。
 6. 仅当发布门禁全部通过，候选快照才可标记为 `published`；旧快照保留以支持回滚演示。
 
-### 8.5 Retrieval evaluation and release
+### 8.5 检索评估与发布
 
 1. 固定评估集包含问题、车辆上下文、期望文档/章节、不可接受来源和期望回答要点。
 2. 在当前已发布快照与候选快照上分别运行评估。
@@ -169,7 +173,7 @@
 4. 系统列出新增失败与已修复案例。
 5. 硬门禁自动给出 Pass/Fail；失败时不得发布，管理员可修复内容或显式放弃候选版本。
 
-### 8.6 Existing simulated action flow
+### 8.6 现有模拟操作流程
 
 1. 用户提出有限的座舱操作请求。
 2. Agent 调用现有本地工具更新 Mock Vehicle State，而不是声称控制真实车辆。
@@ -178,7 +182,7 @@
 
 该流程为兼容能力，不是车书 MVP 的主叙事；知识问答与操作请求必须在 UI 和评估中可区分。
 
-## 9. Knowledge taxonomy
+## 9. 知识分类体系
 
 每个知识单元必须属于一个一级分类，并可拥有多个二级标签。
 
@@ -200,9 +204,9 @@
 
 内容类型 `content_type` 至少支持：`owner_manual`、`quick_guide`、`faq`、`release_note`、`service_bulletin_mock`、`safety_notice_mock`。后两类必须带 `mock` 命名，避免被误认为真实厂商材料。
 
-## 10. Vehicle and knowledge metadata
+## 10. 车辆与知识元数据
 
-### 10.1 Vehicle identity
+### 10.1 车辆身份
 
 MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 
@@ -221,7 +225,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | `region_config` | No | `CN-mainland` | 仅在资料明确依赖地区设置时使用。 |
 | `vehicle_profile_id` | Yes | `aurora-a7-2026-cn-premium-os321` | 上述字段的稳定引用。 |
 
-### 10.2 Document metadata
+### 10.2 文档元数据
 
 | Field | Required | Purpose |
 | --- | --- | --- |
@@ -243,11 +247,11 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | `reviewed_at` | Yes for publish | 最近一次模拟审核时间。 |
 | `checksum` | Yes for publish | 支持快照一致性和变更检测。 |
 
-### 10.3 Chunk metadata
+### 10.3 Chunk 元数据
 
 每个切分后的知识单元至少包含：`chunk_id`、`document_id`、`document_version`、`section_path`、`anchor`、`text`、`applicability`、`taxonomy`、`risk_level`、`effective_from/to`、`status` 和 `checksum`。引用必须能够定位到章节，而不只定位到整份文件。
 
-### 10.4 Matching rules
+### 10.4 匹配规则
 
 - **Hard match**：`oem_id`、`model_id`、`market`、`status=published` 和有效期必须匹配。
 - **Applicable match**：年款、动力、配置、选装与软件版本必须命中明确范围、`all` 或声明的兼容关系。
@@ -255,11 +259,11 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 - **Version order**：精确版本 > 明确兼容版本范围 > 同系列已声明回退版本。无兼容声明则视为不适用。
 - **Source precedence**：在同等适用性下，安全通知 > 车主手册 > 快速指南 > FAQ > Release Note；若来源互相矛盾，不静默选择，进入冲突处理。
 
-## 11. Functional requirements
+## 11. 功能需求
 
 优先级：P0 = MVP 必须；P1 = MVP 后优先；P2 = 未来探索。
 
-### 11.1 Vehicle context
+### 11.1 车辆上下文
 
 | ID | Priority | Requirement | Acceptance criteria |
 | --- | --- | --- | --- |
@@ -269,7 +273,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | FR-VC-04 | P0 | 缺少关键字段时触发最小澄清。 | 版本敏感问题缺版本时不输出唯一确定步骤。 |
 | FR-VC-05 | P1 | 从自然语言提出上下文候选。 | 仅作为待确认候选，用户确认前不作为硬事实。 |
 
-### 11.2 Retrieval and answer generation
+### 11.2 检索与回答生成
 
 | ID | Priority | Requirement | Acceptance criteria |
 | --- | --- | --- | --- |
@@ -283,7 +287,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | FR-RG-08 | P1 | 支持词法与语义混合检索及可选重排。 | 仅在固定评估集上优于 P0 基线且不破坏延迟门禁时启用。 |
 | FR-RG-09 | P1 | 支持多轮指代解析。 | “那旧版本呢”等追问继承主题，但重新应用版本过滤。 |
 
-### 11.3 Knowledge management and governance
+### 11.3 知识管理与治理
 
 | ID | Priority | Requirement | Acceptance criteria |
 | --- | --- | --- | --- |
@@ -295,7 +299,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | FR-KM-06 | P0 | 保留最近一个已发布快照用于回滚演示。 | 回滚后查询和 Eval 均指向旧快照。 |
 | FR-KM-07 | P1 | 提供冲突审阅队列和覆盖缺口视图。 | 可按车辆/分类筛选并记录模拟处置结果。 |
 
-### 11.4 Evaluation and release
+### 11.4 评估与发布
 
 | ID | Priority | Requirement | Acceptance criteria |
 | --- | --- | --- | --- |
@@ -306,7 +310,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | FR-EV-05 | P0 | 自动执行硬性发布门禁。 | 任一硬门禁失败时状态为 FAIL，无法标记 published。 |
 | FR-EV-06 | P1 | 对评估集做版本化与污染检查。 | 训练/调优集与最终 holdout 的 ID 不重叠。 |
 
-### 11.5 UI and observability
+### 11.5 UI 与可观测性
 
 | ID | Priority | Requirement | Acceptance criteria |
 | --- | --- | --- | --- |
@@ -316,7 +320,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | FR-UI-04 | P0 | 展示知识快照和 Eval 摘要。 | 评审者能从 UI 或静态报告确认当前版本是否过门禁。 |
 | FR-UI-05 | P1 | 提供内容管理演示页。 | 可浏览文档状态和校验结果；不伪装真实 CMS。 |
 
-### 11.6 Existing tools and safety
+### 11.6 现有工具与安全能力
 
 | ID | Priority | Requirement | Acceptance criteria |
 | --- | --- | --- | --- |
@@ -325,7 +329,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | FR-SF-03 | P0 | 对高风险知识问题应用更严格回答策略。 | Critical 问题必须引用合格证据；否则给出安全降级建议。 |
 | FR-SF-04 | P0 | 始终声明系统不控制真实车辆。 | UI 常驻声明；回答不得声称真实动作已执行。 |
 
-## 12. Answer contract
+## 12. 回答规范与引用要求
 
 知识型回答使用统一的逻辑结构，UI 表现可以简化：
 
@@ -338,7 +342,7 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 
 回答不得：补全资料未提供的按钮名称、菜单路径、参数、保养周期或故障结论；混合多个车辆的步骤；把旧版本回退内容描述为当前版本确定事实；将模拟资料称为官方生产资料。
 
-## 13. Failure and fallback behavior
+## 13. 失败与降级行为
 
 | Failure condition | System behavior | User-facing behavior | Logging / evaluation |
 | --- | --- | --- | --- |
@@ -357,9 +361,9 @@ MVP 使用显式选择器和虚构 `vehicle_profile_id`，不解析真实 VIN。
 | 不安全操作 | 工具侧拒绝且不可绕过。 | 简短说明安全原因。 | 安全回归必须命中。 |
 | 高风险诊断请求 | 只提供资料中的含义和安全下一步，不做确诊。 | 建议安全停车、检查或联系专业服务；紧急风险优先。 | risk slice 单独评估。 |
 
-## 14. Evaluation framework
+## 14. 评估框架
 
-### 14.1 Evaluation dataset
+### 14.1 评估数据集
 
 MVP 评估集应为仓库内版本化的原创模拟数据，建议至少 80 条，覆盖：
 
@@ -374,7 +378,7 @@ MVP 评估集应为仓库内版本化的原创模拟数据，建议至少 80 条
 
 每条用例至少包含：`case_id`、`query`、`vehicle_context`、`expected_behavior`、`gold_chunk_ids`、`forbidden_chunk_ids`、`answer_key_points`、`forbidden_claims`、`risk_level` 和 `tags`。
 
-### 14.2 Retrieval metrics
+### 14.2 检索指标
 
 - **Context Eligibility Rate**：top-k 结果中满足车辆、状态、有效期和版本规则的比例。
 - **Recall@k**：gold chunk 是否出现在 top-k；报告 @1、@3、@5。
@@ -383,7 +387,7 @@ MVP 评估集应为仓库内版本化的原创模拟数据，建议至少 80 条
 - **Wrong-Version Retrieval Rate**：未声明兼容却引用其他版本的查询比例。
 - **No-answer Precision**：系统判定无答案的案例中，确实无合格证据的比例。
 
-### 14.3 Answer metrics
+### 14.3 回答指标
 
 - **Grounded Claim Precision**：抽取的可验证主张中被引用支持的比例。
 - **Citation Correctness**：引用是否支持相邻主张且适用于当前车辆。
@@ -395,7 +399,7 @@ MVP 评估集应为仓库内版本化的原创模拟数据，建议至少 80 条
 
 LLM-as-judge 如被采用，只作为可复查的辅助评分；关键门禁优先使用确定性匹配、引用映射和人工标注的要点。评估报告必须记录模型配置和知识快照 ID，不把一次非确定性运行包装为绝对结论。
 
-### 14.4 System metrics
+### 14.4 系统指标
 
 - 端到端延迟 P50 / P95，以及过滤、检索、生成分段耗时。
 - 运行错误率和 fallback 分布。
@@ -403,9 +407,9 @@ LLM-as-judge 如被采用，只作为可复查的辅助评分；关键门禁优�
 - 构建校验通过率、冲突数、过期内容数和未归类内容数。
 - pytest 通过率及与 baseline 的回归情况。
 
-## 15. Release criteria and quality gate
+## 15. 发布标准与质量门禁
 
-### 15.1 MVP release gate
+### 15.1 MVP 发布门禁
 
 候选知识快照只有同时满足以下条件才能发布：
 
@@ -429,7 +433,7 @@ LLM-as-judge 如被采用，只作为可复查的辅助评分；关键门禁优�
 
 关键切片至少包括每个 OEM、每个车型、每个软件版本族、`high/critical` 风险和 `no-answer`。若样本量过小，报告必须显示样本数，不得用百分比掩盖覆盖不足。
 
-### 15.2 Release artifacts
+### 15.2 发布产物
 
 每次模拟发布应产出：
 
@@ -440,7 +444,7 @@ LLM-as-judge 如被采用，只作为可复查的辅助评分；关键门禁优�
 - 可回滚的上一 published 快照指针。
 - 演示使用的模型配置与运行环境说明，不包含密钥。
 
-## 16. MVP delivery plan
+## 16. MVP 交付计划
 
 ### Phase 0 — Preserve and characterize baseline
 
@@ -472,37 +476,37 @@ LLM-as-judge 如被采用，只作为可复查的辅助评分；关键门禁优�
 - 产出 candidate vs baseline 报告，实现自动门禁和回滚演示。
 - 更新 README、Architecture、Demo Script，并录制核心对照场景。
 
-### MVP exit criteria
+### MVP 完成标准
 
 - PRD 中所有 P0 项已实现或有明确、公开的偏差记录。
 - 至少演示三组“同问不同车/版本不同答”、一组缺上下文澄清、一组无答案、一组冲突拦截和一组安全 Guardrail。
 - 第 15 节全部硬门禁通过。
 - 从干净环境可按 README 复现测试、构建知识快照和运行 Demo。
 
-## 17. Future roadmap
+## 17. 未来路线图
 
-### Near term
+### 近期
 
 - 以评估结果决定是否引入 embeddings、hybrid retrieval 或轻量 reranker。
 - 增加查询改写、别名词典、多轮指代和中英文跨语言检索。
 - 改进内容 diff、冲突审阅、覆盖热力图和失败案例聚类。
 - 增加基于合成模板与人工复核的评估集扩充工具。
 
-### Medium term
+### 中期
 
 - 模拟 VIN → Vehicle Profile 解析，但仍只使用虚构 VIN 与本地目录。
 - 模拟角色权限、审核签核、灰度快照和多环境发布。
 - 增加图片/表格章节的多模态检索实验，素材仍为原创或可安全使用的测试资产。
 - 引入会话反馈和失败队列，离线演示“反馈 → 修复 → 评估 → 发布”闭环。
 
-### Long term / research
+### 长期与研究方向
 
 - 探索时态知识图谱表达车型、部件、配置、软件与文档关系。
 - 探索检索不确定性校准、自动冲突发现和证据覆盖分析。
 - 探索端侧小模型或离线检索，但不在本项目中声称真实车规部署。
 - 若未来获得合法数据与明确授权，再单独评估真实 OEM 接入、合规、安全和运维需求；这些不属于当前承诺。
 
-## 18. Risks and mitigations
+## 18. 风险与应对
 
 | Risk | Impact | Mitigation |
 | --- | --- | --- |
@@ -514,14 +518,14 @@ LLM-as-judge 如被采用，只作为可复查的辅助评分；关键门禁优�
 | 作品集被误解为真实车控或官方资料 | 诚信与安全风险 | UI 常驻模拟声明，使用虚构 OEM，文档和 README 明确边界。 |
 | 保留操作工具分散主叙事 | 产品定位模糊 | 默认首页以知识问答为核心，操作工具放入独立兼容区。 |
 
-## 19. Dependencies and constraints
+## 19. 依赖与约束
 
 - 复用当前 Python、OpenAI Agents SDK 兼容接口、Gradio、pytest 和本地文件结构。
 - 当前生成模型通过环境配置调用兼容 API；Eval 应允许在未配置 API 时运行检索与确定性测试，并明确标记生成评估未运行。
 - MVP 数据、索引、trace 和报告均保存在本地；不引入未在仓库中实现的生产服务依赖。
 - 任何新增依赖都需要以评估收益、可复现性和作品集运行成本为依据。
 
-## 20. Open product decisions
+## 20. 待决产品问题
 
 以下问题在实现前通过小规模实验决定，不在本 PRD 中伪装成既定生产能力：
 
@@ -531,18 +535,352 @@ LLM-as-judge 如被采用，只作为可复查的辅助评分；关键门禁优�
 4. 回答评估中人工规则、字符串要点与 LLM judge 的权重如何分配？
 5. 普通用户引用信息的默认展开程度如何在可信度与界面简洁之间平衡？
 
-## 21. Current baseline versus target MVP
+## 21. 当前基线与目标 MVP
 
-| Capability | Repository today | Vehicle Book MVP target |
+| Capability | Repository status (2026-09-14) | Vehicle Book MVP target |
 | --- | --- | --- |
-| Knowledge corpus | 1 份本地 Mock 手册 | 多虚构 OEM / 车型 / 配置 / 软件版本资料 |
-| Retrieval | 单语料 BM25，top-2 | 元数据硬过滤 + 可解释排序 + 阈值 + 版本回退 |
-| Metadata | 无车辆/文档 manifest | 完整车辆、文档、chunk、生命周期 schema |
-| Citations | Tool 返回原始章节 | 用户可见章节级引用与适用范围 |
-| Governance | 无 | 校验、冲突、快照、diff、发布与回滚演示 |
-| Evaluation | 5 条 live Agent case + pytest | 检索/回答/安全/回归分层 Eval 与切片门禁 |
+| Knowledge corpus | 已有 3 个虚构 vehicle/version profile、共 9 份资料；legacy 单手册仍保留 | 扩展到多虚构 OEM，并补齐覆盖治理 |
+| Retrieval | 已有独立 Vehicle Book BM25：先解析车辆及发布策略，再按 vehicle/OEM/model/trim/software 严格过滤；尚未接入 Agent | 增加阈值、冲突检测和受控版本回退，并接入问答流程 |
+| Metadata | 已有本地 vehicle/document registry 和 5 个 typed schemas | 增加 manifest 校验、chunk 生命周期与快照 schema |
+| Citations | `RetrievedChunk` 已返回 score、metadata 和 source；UI 尚未展示 | 用户可见章节级引用与适用范围 |
+| Governance | 已有 JSON/schema 基础校验；尚无治理工作流 | 校验、冲突、快照、diff、发布与回滚演示 |
+| Evaluation | pytest 覆盖 registry、跨车/跨版本隔离和来源元数据；保留 5 条 live Agent eval | 检索/回答/安全/回归分层 Eval 与切片门禁 |
 | UI | Cockpit chat + Mock state | 车书问答 + 车辆选择 + 引用/调试 + 治理摘要 |
 | Safety | 参数校验、移动中禁开门 | 保留现有规则，并增加高风险知识回答策略 |
 | Integrations | 兼容模型 API；无真实车辆 | 仍为本地模拟，不新增生产 OEM/车辆集成 |
 
 该对照表是项目叙事的边界：左列是已实现事实，右列是本 PRD 的目标，不应在目标实现和验证前写成当前能力。
+
+## 22. 演示场景
+
+1. **软件版本隔离**：选择 ASTER_X1 v1，询问“30 km/h 可以开启 LCC 吗？”，回答“不可以，v1 要求 60–120 km/h”；切换到 v2 后重新提问，回答“可以，但仍需满足环境与驾驶员监督条件”。
+2. **功能版本差异**：ASTER_X1 v1 查询 HPA 得到“不支持”；v2 得到“支持，最多 2 条、每条 100 m”。
+3. **车型隔离**：ASTER_X1 查询电池容量只能得到 75 kWh；ASTER_X2 得到 90 kWh，引用不得串车。
+4. **配置差异**：ASTER_X1 的座椅通风仅适用于 MAX；ASTER_X2 适用于 PRO 和 MAX。
+5. **发布策略**：默认策略不返回 `pre_release` 的 ASTER_X1 v2；显式启用预发布策略后才允许检索。
+6. **无答案降级**：询问“车辆能否自动飞往火星”，系统说明当前知识库没有证据，而不是编造功能。
+7. **安全回归**：模拟车速为 50 km/h 时请求打开左前门，原工具侧 Guardrail 继续拒绝操作。
+
+# English Version
+
+## 1. Product summary
+
+Vehicle Book is a simulated automotive knowledge assistant for owners, support specialists, and knowledge operations teams. It resolves the selected OEM, model, trim, and software version before retrieval, answers only from applicable local evidence, and returns inspectable source metadata.
+
+This is an incremental pivot of the existing AI Cockpit Agent, not a rebuild. The existing agent, function tools, manual BM25 retrieval, deterministic safety guardrails, mock vehicle state, Gradio UI, pytest suite, and live evaluation remain in place. Vehicle Book becomes the primary portfolio story, while simulated cockpit actions remain a supporting capability.
+
+Positioning: **identify the exact vehicle first, then answer from matching, versioned evidence and show why the answer applies.**
+
+## 2. Background and problem statement
+
+Automotive knowledge is context-sensitive. A procedure or capability may change by OEM, model, trim, market, powertrain, option package, or software version. Searching all manuals as one undifferentiated corpus can cause:
+
+- cross-model retrieval and incorrect operating instructions;
+- trim-specific features being described as standard equipment;
+- outdated menu paths or behavior after a software release;
+- answers that cannot be audited back to a document and section;
+- knowledge changes that improve recall while silently increasing version leakage.
+
+The product problem is therefore not merely “search a manual.” It is to retrieve the correct evidence for the exact vehicle context, decline unsupported answers, expose sources, and measure regressions before a simulated knowledge release.
+
+## 3. Goals and success criteria
+
+### 3.1 Product goals
+
+1. Support multiple fictional OEMs, models, trims, and software versions.
+2. Apply vehicle metadata constraints before relevance scoring.
+3. Return a source, document version, and applicability context for factual answers.
+4. Clarify, fall back, or refuse when vehicle context or evidence is insufficient.
+5. Demonstrate a local workflow for knowledge ingestion, validation, evaluation, and release gating.
+6. Preserve all existing cockpit-agent and safety behavior.
+
+### 3.2 Portfolio success
+
+A reviewer should be able to see, within a short demo, that the same question produces the correct version-specific answer, that unknown or ambiguous cases fail safely, that every retrieved result is traceable, and that a candidate change can be compared with a baseline using repeatable tests.
+
+### 3.3 Honest simulation boundary
+
+All vehicles, documents, release states, service references, and workflows are fictional local fixtures. The project does not claim a production deployment, official OEM content, real vehicle control, or a connection to an OEM platform.
+
+## 4. Target users and pain points
+
+### Vehicle owner or prospective owner
+
+Needs concise instructions that apply to the selected vehicle and software. Existing web answers often mix model years and versions, while static manuals are difficult to search.
+
+### Front-line support specialist
+
+Needs fast retrieval, clear applicability, and copyable sources. Manually locating the correct version is slow and using another model's instructions damages trust.
+
+### Knowledge operations specialist
+
+Needs metadata validation, lifecycle status, coverage, conflicts, evaluation results, and a release decision. Content quality is otherwise difficult to measure before publication.
+
+### Portfolio reviewer
+
+Needs a reproducible view of architecture, retrieval quality, failures, and the difference between implemented and planned capabilities.
+
+## 5. User stories
+
+| ID | User story | Acceptance summary |
+| --- | --- | --- |
+| US-01 | As an owner, I want answers scoped to my selected vehicle. | Every returned chunk matches the exact vehicle profile. |
+| US-02 | As an owner, I want the assistant to ask when missing context would change the answer. | It does not invent a single procedure for an ambiguous vehicle. |
+| US-03 | As an owner, I want to inspect the source and version. | Knowledge answers expose document, section, version, and source. |
+| US-04 | As a support specialist, I want version differences to be explicit. | Switching software versions changes both evidence and answer where expected. |
+| US-05 | As a knowledge operator, I want invalid metadata blocked. | Invalid or duplicate registry records do not enter retrieval. |
+| US-06 | As a reviewer, I want reproducible tests. | Local tests cover registry resolution, vehicle isolation, version isolation, and source metadata. |
+
+## 6. Scope
+
+### 6.1 MVP scope
+
+- Local synthetic Markdown documents and JSON registries.
+- Explicit vehicle profiles containing OEM, model, trim, software version, and release status.
+- Deterministic heading-based chunking.
+- Vehicle-aware lexical retrieval with hard metadata filtering.
+- Published and pre-release retrieval policies.
+- Retrieval results containing rank, score, document metadata, and source path.
+- Evidence-based answers, citation display, fallback behavior, evaluation, and a release gate in later MVP phases.
+- Preservation of the current mock tools and deterministic safety rules.
+
+### 6.2 Non-goals
+
+- Real OEM APIs, CMS platforms, VIN services, dealer systems, or OTA systems.
+- Real CAN, SOME/IP, DDS, remote vehicle control, or production telematics.
+- Model training, fine-tuning, or a complex multi-agent design.
+- Production-grade identity, permissions, compliance, functional-safety certification, or SLA.
+- ASR/TTS, a high-fidelity head-unit UI, mobile applications, or a production database.
+- Copying copyrighted OEM manuals or using web search as the default vehicle-fact fallback.
+
+## 7. Product principles
+
+1. Resolve vehicle context before retrieval.
+2. Treat metadata as a hard boundary, not a ranking hint.
+3. Prefer missing-answer behavior over unsupported fluency.
+4. Make software and document versions visible.
+5. Keep safety-critical action constraints deterministic and tool-side.
+6. Evaluate by OEM, model, version, topic, and risk slice.
+7. Label every surface and fixture as simulated.
+
+## 8. Core flows
+
+### 8.1 Vehicle-scoped question answering
+
+1. Select or provide a `vehicle_id`.
+2. Resolve it to OEM, model, trim, software version, and release status.
+3. Apply the selected release policy.
+4. Filter chunks by exact vehicle identity and published document status.
+5. Rank only the eligible chunks.
+6. Generate an evidence-bound answer and show citations.
+
+### 8.2 Missing-context clarification
+
+If the missing model, trim, or version could change the answer, ask for the smallest necessary field. If the user cannot provide it, return only explicitly universal information or state that the answer cannot be confirmed.
+
+### 8.3 Version-aware fallback
+
+Exact-version evidence has priority. A fallback version may be used only when an explicit compatibility relationship exists. The response must disclose the requested version, actual source version, and possible mismatch. Automatic cross-OEM, cross-model, or undeclared newer-version fallback is prohibited.
+
+### 8.4 Knowledge ingestion and release
+
+Load local registry records, validate required fields and references, read the registered Markdown source, remove front matter, create deterministic section chunks, run retrieval and answer evaluation, and publish only when all hard gates pass.
+
+### 8.5 Existing simulated action flow
+
+Explicit cockpit actions continue to call existing local tools and mutate only mock state. Tool-side validators remain authoritative. This flow is separate from factual knowledge retrieval.
+
+## 9. Knowledge taxonomy
+
+| Category | Examples | Default risk |
+| --- | --- | --- |
+| Owner Manual | startup, controls, basic operation | Low |
+| ADAS | LCC, ACC, AEB, HPA, limitations | High |
+| Vehicle Configuration | trim, options, feature availability | Medium |
+| HVAC and Comfort | temperature, seat heating, ventilation | Low |
+| Battery and Charging | capacity, charge limit, preconditioning | Medium |
+| Warning Lights and Troubleshooting | indicators and safe next steps | High |
+| Software and Release Notes | changed menus, behavior, known limits | Medium |
+| Safety and Emergency | doors, evacuation, towing | Critical |
+
+Supported content types include `owner_manual`, `adas`, `configuration`, `quick_guide`, `faq`, `release_note`, and explicitly fictional safety or service fixtures.
+
+## 10. Vehicle and knowledge metadata
+
+### 10.1 Vehicle profile
+
+The minimum vehicle context is:
+
+| Field | Meaning |
+| --- | --- |
+| `vehicle_id` | Stable profile identifier |
+| `oem` | Fictional OEM identifier |
+| `model` | Model identifier |
+| `trim` | Configuration trim |
+| `software_version` | Exact software release |
+| `release_status` | `released` or `pre_release` |
+
+### 10.2 Document metadata
+
+Each document requires a stable document ID, linked vehicle ID, title, content type, document version, local source path, and lifecycle status. Future governance metadata may add locale, effective dates, owner role, checksum, taxonomy, and risk level.
+
+### 10.3 Chunk metadata
+
+Each chunk needs a deterministic chunk ID, document metadata, section name, text, and inherited vehicle applicability. Retrieval must preserve this metadata through to the returned result.
+
+### 10.4 Matching policy
+
+- Hard match: vehicle ID, OEM, model, trim, software version, allowed release state, and published document status.
+- Soft ranking: lexical or semantic relevance only within the hard-filtered set.
+- No cross-vehicle or cross-version candidate may be rescued by a high relevance score.
+
+## 11. Functional requirements
+
+| ID | Requirement | Priority |
+| --- | --- | --- |
+| FR-VC-01 | Resolve a known vehicle ID into the complete typed profile. | P0 |
+| FR-VC-02 | Return a clear safe error for an unknown vehicle ID. | P0 |
+| FR-RG-01 | Filter by exact vehicle metadata before ranking. | P0 |
+| FR-RG-02 | Support deterministic top-k retrieval. | P0 |
+| FR-RG-03 | Return rank, score, metadata, and source. | P0 |
+| FR-RG-04 | Exclude pre-release profiles unless explicitly allowed. | P0 |
+| FR-RG-05 | Return no factual result when no eligible evidence exists. | P0 |
+| FR-KM-01 | Load local vehicle and document JSON registries. | P0 |
+| FR-KM-02 | Reject invalid records, duplicates, and unknown vehicle references. | P0 |
+| FR-KM-03 | Chunk registered Markdown deterministically. | P0 |
+| FR-EV-01 | Test cross-model and cross-version isolation. | P0 |
+| FR-EV-02 | Compare candidate retrieval behavior with a fixed baseline dataset. | P1 |
+| FR-UI-01 | Add vehicle selection and citations without rebuilding the current UI. | P1 |
+
+## 12. Answer and citation contract
+
+A knowledge answer should contain a direct answer, the selected vehicle context, evidence-supported steps or explanation, a safety note when required, and source citations. Each citation must expose the document title, section, document version, applicable software version, and local source identifier.
+
+Allowed result states are `grounded`, `fallback-version`, `conflict`, and `insufficient-evidence`. The system must not invent button labels, menu paths, parameters, service intervals, diagnoses, or feature availability.
+
+## 13. Failure and fallback behavior
+
+| Condition | Required behavior |
+| --- | --- |
+| Unknown vehicle ID | Raise a clear `UnknownVehicleError`; do not retrieve. |
+| Missing disambiguating context | Ask for the minimum field that changes the answer. |
+| Pre-release profile under released-only policy | Return no chunks. |
+| No eligible evidence | State that the local synthetic knowledge base cannot confirm the answer. |
+| Low relevance | Clarify or return insufficient evidence instead of forcing an answer. |
+| Cross-model or cross-version candidate | Exclude before scoring. |
+| Conflicting evidence | Surface the conflict; do not silently merge incompatible instructions. |
+| Missing or escaping source path | Fail ingestion with a clear local error. |
+| Generation or retrieval failure | Do not mutate mock state or fabricate an answer. |
+| Unsafe action | Preserve tool-side rejection and explain the reason. |
+| High-risk diagnosis request | Provide only supported meaning and safe next steps, not a diagnosis. |
+
+## 14. Evaluation framework
+
+### 14.1 Dataset
+
+The versioned synthetic evaluation set should contain the query, vehicle context, expected behavior, gold chunk IDs, forbidden chunk IDs, key answer points, forbidden claims, risk level, and tags. It must include paired questions across ASTER_X1 v1, ASTER_X1 v2, and ASTER_X2 v1, plus ambiguous and no-answer cases.
+
+### 14.2 Retrieval metrics
+
+- Context Eligibility Rate
+- Recall@1, Recall@3, and Recall@5
+- Mean Reciprocal Rank
+- Wrong-Vehicle Retrieval Rate
+- Wrong-Version Retrieval Rate
+- No-answer Precision
+
+### 14.3 Answer and safety metrics
+
+- Grounded Claim Precision
+- Citation Correctness
+- Answer Key-point Coverage
+- Forbidden Claim Rate
+- Clarification Accuracy
+- Version Disclosure Accuracy
+- Safety Compliance Rate
+
+### 14.4 System metrics
+
+Track end-to-end and retrieval P50/P95 latency, errors, fallback distribution, knowledge coverage, ingestion validation failures, and pytest results. Any LLM judge is advisory and must not replace deterministic isolation and citation checks.
+
+## 15. Knowledge governance
+
+Documents follow `draft → validated → published → retired`. Only published and currently applicable content enters default retrieval. A candidate corpus should receive a snapshot ID, checksums, a change summary, schema validation, duplicate checks, broken-source checks, conflict review, and a baseline comparison. The previous published snapshot should remain available for a rollback demonstration.
+
+The current implementation provides local registries, typed schemas, reference validation, deterministic chunks, and release-aware filtering. Snapshotting, conflict workflow, and rollback remain roadmap items.
+
+## 16. Release criteria and quality gate
+
+The MVP hard gate requires:
+
+- 100% valid published metadata;
+- zero duplicate active vehicle, document, or chunk IDs;
+- zero broken citation sources;
+- zero wrong-OEM, wrong-model, or undeclared wrong-version retrievals;
+- zero critical safety violations and forbidden high-risk claims;
+- Recall@3 of at least 90% overall and 80% in each required slice;
+- citation correctness of at least 95%;
+- no-answer precision and clarification accuracy of at least 90%;
+- all pytest tests passing;
+- no regression in the existing five live-agent behaviors when the model API is configured.
+
+Every simulated release should record the knowledge snapshot, checksums, changed applicability, evaluation report, gate decision, known limitations, and rollback pointer.
+
+## 17. MVP delivery plan
+
+1. Preserve and characterize the cockpit-agent baseline.
+2. Create fictional, version-differentiated knowledge fixtures.
+3. Add local registries and typed schemas.
+4. Add deterministic ingestion and vehicle-aware retrieval.
+5. Add citations, thresholds, clarification, and conflict handling.
+6. Build a fixed retrieval and answer evaluation set.
+7. Add release gating and a lightweight governance view.
+8. Integrate Vehicle Book into the existing agent and Gradio UI without a rewrite.
+
+MVP exit requires all P0 requirements, passing hard gates, reproducible setup from a clean checkout, and demos for version differences, model differences, missing context, no-answer behavior, conflicts, and the existing safety guardrail.
+
+## 18. Future roadmap
+
+Near-term experiments include hybrid retrieval, a small reranker, aliases, multilingual queries, multi-turn references, content diffs, coverage views, and failure clustering. Medium-term portfolio work may simulate VIN-to-profile resolution, review roles, staged snapshots, feedback queues, and original multimodal fixtures. Longer-term research may explore temporal knowledge graphs, uncertainty calibration, conflict discovery, and offline retrieval, without claiming a real vehicle-grade deployment.
+
+## 19. Risks and mitigations
+
+| Risk | Mitigation |
+| --- | --- |
+| Fixtures are too simple to demonstrate version awareness. | Maintain paired questions with deliberately different correct answers. |
+| Incorrect metadata creates confident errors. | Validate schemas and references; test hard filtering directly. |
+| Overall recall hides one weak vehicle slice. | Gate by model, version, topic, and risk slice. |
+| Non-deterministic judging prevents reproduction. | Prefer deterministic checks and retain case-level output. |
+| The portfolio is mistaken for a real OEM system. | Use fictional names and persistent simulation notices. |
+| New architecture obscures the working baseline. | Keep changes incremental and retain legacy tools and tests. |
+
+## 20. Dependencies, constraints, and open decisions
+
+The MVP reuses Python, local files, the existing Agents SDK-compatible model layer, Gradio, pytest, and a dependency-free BM25 implementation. It adds no database. Retrieval evaluation must run without a model API; generation evaluation should be marked “not run” when credentials are absent.
+
+Open decisions include whether BM25 needs hybrid retrieval, how explicit version compatibility should be encoded, how conflicts should be detected, how deterministic checks and an optional LLM judge should be weighted, and how much citation detail should be expanded by default.
+
+## 21. Current baseline versus target MVP
+
+| Capability | Repository status (2026-09-14) | Target MVP |
+| --- | --- | --- |
+| Corpus | Nine synthetic documents across three vehicle/version profiles, plus the legacy manual | Multiple fictional OEMs with measured coverage |
+| Retrieval | Separate vehicle-aware BM25 with exact profile and release filtering; not yet agent-integrated | Thresholds, conflict handling, controlled fallback, and agent integration |
+| Metadata | Local vehicle/document registries and typed schemas | Full manifest, lifecycle, and snapshot validation |
+| Sources | Retrieved chunks expose score, metadata, and source | User-visible section citations and applicability |
+| Governance | Basic JSON/schema and reference validation | Snapshots, diffs, conflicts, release gate, and rollback |
+| Evaluation | pytest covers resolution, isolation, release policy, and sources; five legacy live cases remain | Layered retrieval, answer, safety, and regression evaluation |
+| UI | Existing cockpit chat and mock state | Vehicle selector, citations, debug view, and governance summary |
+| Integrations | Model-compatible API only; no real vehicle | Remains a local simulation with no production OEM integration |
+
+This table is the portfolio boundary: implemented capabilities must not be confused with target capabilities.
+
+## 22. Demo scenarios
+
+1. Select ASTER_X1 v1 and ask whether LCC can activate at 30 km/h: the answer is no because v1 requires 60–120 km/h. Switch to v2: 30 km/h is within 0–130 km/h, subject to the remaining conditions.
+2. Ask about HPA: ASTER_X1 v1 does not support it; v2 supports two routes up to 100 m each.
+3. Ask for battery capacity: ASTER_X1 returns 75 kWh and ASTER_X2 returns 90 kWh, with no source leakage.
+4. Ask which trims support seat ventilation: ASTER_X1 is MAX-only; ASTER_X2 supports PRO and MAX.
+5. Show that the default release policy excludes pre-release ASTER_X1 v2 until `include_pre_release` is selected.
+6. Ask about an unsupported “flight mode” and show insufficient-evidence behavior.
+7. Set mock speed to 50 km/h and request opening the left-front door; the existing deterministic guardrail rejects the action.
