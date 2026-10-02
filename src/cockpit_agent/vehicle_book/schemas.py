@@ -21,9 +21,7 @@ class VehicleProfile:
     software_version: str
     release_status: str
 
-    VALID_RELEASE_STATUSES: ClassVar[frozenset[str]] = frozenset(
-        {"released", "pre_release"}
-    )
+    VALID_RELEASE_STATUSES: ClassVar[frozenset[str]] = frozenset({"released", "pre_release"})
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> VehicleProfile:
@@ -37,8 +35,7 @@ class VehicleProfile:
         )
         if profile.release_status not in cls.VALID_RELEASE_STATUSES:
             raise ValueError(
-                "release_status must be one of: "
-                + ", ".join(sorted(cls.VALID_RELEASE_STATUSES))
+                "release_status must be one of: " + ", ".join(sorted(cls.VALID_RELEASE_STATUSES))
             )
         return profile
 
@@ -62,9 +59,7 @@ class DocumentMetadata:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> DocumentMetadata:
         supersedes = data.get("supersedes")
-        if supersedes is not None and (
-            not isinstance(supersedes, str) or not supersedes.strip()
-        ):
+        if supersedes is not None and (not isinstance(supersedes, str) or not supersedes.strip()):
             raise ValueError("supersedes must be a non-empty string when provided")
 
         metadata = cls(
@@ -79,9 +74,7 @@ class DocumentMetadata:
             supersedes=supersedes.strip() if supersedes else None,
         )
         if metadata.status not in cls.VALID_STATUSES:
-            raise ValueError(
-                "status must be one of: " + ", ".join(sorted(cls.VALID_STATUSES))
-            )
+            raise ValueError("status must be one of: " + ", ".join(sorted(cls.VALID_STATUSES)))
         if metadata.source_path.is_absolute():
             raise ValueError("source_path must be relative to the repository root")
         return metadata
@@ -103,7 +96,50 @@ class RetrievedChunk:
 
 
 @dataclass(frozen=True, slots=True)
+class Citation:
+    chunk_id: str
+    document_id: str
+    vehicle_id: str
+    title: str
+    document_version: str
+    section: str
+    source_path: Path
+    rank: int
+    score: float
+
+    @classmethod
+    def from_retrieved(cls, retrieved: RetrievedChunk) -> Citation:
+        """Build citation provenance from an actual retrieval result."""
+        chunk = retrieved.chunk
+        metadata = chunk.metadata
+        return cls(
+            chunk_id=chunk.chunk_id,
+            document_id=metadata.document_id,
+            vehicle_id=metadata.vehicle_id,
+            title=metadata.title,
+            document_version=metadata.document_version,
+            section=chunk.section,
+            source_path=metadata.source_path,
+            rank=retrieved.rank,
+            score=retrieved.score,
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class AnswerDraft:
+    answer: str
+    cited_chunk_ids: tuple[str, ...]
+    insufficient_evidence: bool
+
+
+@dataclass(frozen=True, slots=True)
 class AnswerResult:
     answer: str
-    citations: tuple[RetrievedChunk, ...] = field(default_factory=tuple)
+    vehicle_id: str
+    citations: tuple[Citation, ...] = field(default_factory=tuple)
+    evidence: tuple[RetrievedChunk, ...] = field(default_factory=tuple)
     fallback_reason: str | None = None
+
+    @property
+    def is_fallback(self) -> bool:
+        return self.fallback_reason is not None

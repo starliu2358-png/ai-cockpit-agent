@@ -2,7 +2,9 @@
 
 from .registry import DocumentRegistry, RegistryError, VehicleRegistry
 from .schemas import (
+    AnswerDraft,
     AnswerResult,
+    Citation,
     DocumentMetadata,
     KnowledgeChunk,
     RetrievedChunk,
@@ -10,7 +12,9 @@ from .schemas import (
 )
 
 __all__ = [
+    "AnswerDraft",
     "AnswerResult",
+    "Citation",
     "DocumentMetadata",
     "DocumentRegistry",
     "KnowledgeChunk",
