@@ -1,0 +1,26 @@
+[
+  {
+    "vehicle_id": "alpha_aster_x1_max_v1",
+    "oem": "OEM_ALPHA",
+    "model": "ASTER_X1",
+    "trim": "MAX",
+    "software_version": "1.0",
+    "release_status": "released"
+  },
+  {
+    "vehicle_id": "alpha_aster_x1_max_v2",
+    "oem": "OEM_ALPHA",
+    "model": "ASTER_X1",
+    "trim": "MAX",
+    "software_version": "2.0",
+    "release_status": "pre_release"
+  },
+  {
+    "vehicle_id": "alpha_aster_x2_max_v1",
+    "oem": "OEM_ALPHA",
+    "model": "ASTER_X2",
+    "trim": "MAX",
+    "software_version": "1.0",
+    "release_status": "released"
+  }
+]

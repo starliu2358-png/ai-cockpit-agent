@@ -1,0 +1,95 @@
+[
+  {
+    "document_id": "oem_alpha_aster_x1_v1_owner_manual",
+    "vehicle_id": "alpha_aster_x1_max_v1",
+    "title": "ASTER_X1 v1 Owner Manual",
+    "content_type": "owner_manual",
+    "document_version": "1.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x1/v1/owner_manual.md",
+    "status": "published",
+    "locale": "zh-CN"
+  },
+  {
+    "document_id": "oem_alpha_aster_x1_v1_adas",
+    "vehicle_id": "alpha_aster_x1_max_v1",
+    "title": "ASTER_X1 v1 ADAS Guide",
+    "content_type": "adas",
+    "document_version": "1.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x1/v1/adas.md",
+    "status": "published",
+    "locale": "zh-CN"
+  },
+  {
+    "document_id": "oem_alpha_aster_x1_v1_configuration",
+    "vehicle_id": "alpha_aster_x1_max_v1",
+    "title": "ASTER_X1 v1 Configuration",
+    "content_type": "configuration",
+    "document_version": "1.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x1/v1/configuration.md",
+    "status": "published",
+    "locale": "zh-CN"
+  },
+  {
+    "document_id": "oem_alpha_aster_x1_v2_owner_manual",
+    "vehicle_id": "alpha_aster_x1_max_v2",
+    "title": "ASTER_X1 v2 Owner Manual",
+    "content_type": "owner_manual",
+    "document_version": "2.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x1/v2/owner_manual.md",
+    "status": "published",
+    "locale": "zh-CN",
+    "supersedes": "oem_alpha_aster_x1_v1_owner_manual@1.0"
+  },
+  {
+    "document_id": "oem_alpha_aster_x1_v2_adas",
+    "vehicle_id": "alpha_aster_x1_max_v2",
+    "title": "ASTER_X1 v2 ADAS Guide",
+    "content_type": "adas",
+    "document_version": "2.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x1/v2/adas.md",
+    "status": "published",
+    "locale": "zh-CN",
+    "supersedes": "oem_alpha_aster_x1_v1_adas@1.0"
+  },
+  {
+    "document_id": "oem_alpha_aster_x1_v2_configuration",
+    "vehicle_id": "alpha_aster_x1_max_v2",
+    "title": "ASTER_X1 v2 Configuration",
+    "content_type": "configuration",
+    "document_version": "2.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x1/v2/configuration.md",
+    "status": "published",
+    "locale": "zh-CN",
+    "supersedes": "oem_alpha_aster_x1_v1_configuration@1.0"
+  },
+  {
+    "document_id": "oem_alpha_aster_x2_v1_owner_manual",
+    "vehicle_id": "alpha_aster_x2_max_v1",
+    "title": "ASTER_X2 v1 Owner Manual",
+    "content_type": "owner_manual",
+    "document_version": "1.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x2/v1/owner_manual.md",
+    "status": "published",
+    "locale": "zh-CN"
+  },
+  {
+    "document_id": "oem_alpha_aster_x2_v1_adas",
+    "vehicle_id": "alpha_aster_x2_max_v1",
+    "title": "ASTER_X2 v1 ADAS Guide",
+    "content_type": "adas",
+    "document_version": "1.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x2/v1/adas.md",
+    "status": "published",
+    "locale": "zh-CN"
+  },
+  {
+    "document_id": "oem_alpha_aster_x2_v1_configuration",
+    "vehicle_id": "alpha_aster_x2_max_v1",
+    "title": "ASTER_X2 v1 Configuration",
+    "content_type": "configuration",
+    "document_version": "1.0",
+    "source_path": "data/knowledge/oem_alpha/aster_x2/v1/configuration.md",
+    "status": "published",
+    "locale": "zh-CN"
+  }
+]
