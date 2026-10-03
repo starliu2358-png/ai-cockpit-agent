@@ -1,0 +1,25 @@
+{
+  "dataset_path": "data\\eval\\vehicle_book_retrieval_eval.jsonl",
+  "top_k": 3,
+  "total_cases": 30,
+  "positive_cases": 27,
+  "no_answer_cases": 3,
+  "hit_at_1": 0.7407407407407407,
+  "hit_at_3": 0.7777777777777778,
+  "recall_at_3": 0.7777777777777778,
+  "mrr": 0.7592592592592593,
+  "cross_vehicle_error_rate": 0.0,
+  "cross_version_error_rate": 0.0,
+  "no_answer_false_positive_rate": 1.0,
+  "failed_case_ids": [
+    "x1_v1_lcc_30kph",
+    "x1_v1_lcc_lane_markings",
+    "x1_v1_hpa_support",
+    "x1_v1_no_answer_flight_mode",
+    "x1_v2_lcc_30kph",
+    "x1_v2_hpa_support",
+    "x1_v2_hpa_route_count_length",
+    "x1_v2_no_answer_mars",
+    "x2_v1_no_answer_underwater"
+  ]
+}
