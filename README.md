@@ -48,6 +48,8 @@ Edit `.env` and set your API key, then:
 python -m cockpit_agent.ui
 ```
 
+页面包含 `Cockpit Demo` 与 `Knowledge Admin（只读）` Tab。后者按 Vehicle Profile 浏览本地资料的类型、版本、状态和相对来源路径，并只读取既有的 `outputs/release_gate/release_gate_summary.json`；报告不存在时显示 `NOT_RUN`（未运行），不会触发门禁、模型调用或任何内容修改。
+
 Run tests:
 
 ```bash
@@ -59,6 +61,14 @@ Run live eval:
 ```bash
 python scripts/run_eval.py
 ```
+
+Run the local Vehicle Book Release Gate:
+
+```powershell
+python scripts\run_release_gate.py
+```
+
+本项目的 Release Gate 是本地模拟知识发布门禁，不等同于真实 OEM 内容审批或生产安全认证。
 
 ## Demo prompts
 
@@ -80,6 +90,7 @@ Expected result: the tool-side safety guardrail rejects the operation and the do
 - `docs/PRD.md` — MVP requirements and product scope
 - `docs/ARCHITECTURE.md` — system architecture and design decisions
 - `docs/DEMO_SCRIPT.md` — demo scenarios
+- `docs/KNOWLEDGE_ADMIN.md` — read-only knowledge administration view
 
 ## Scope
 
