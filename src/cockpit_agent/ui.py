@@ -7,6 +7,12 @@ import gradio as gr
 from .agent import run_agent
 from .state import vehicle_state
 from .vehicle_book.admin import KnowledgeAdminView, load_knowledge_admin_view
+from .vehicle_book.dashboard import (
+    DashboardGate,
+    DashboardMetric,
+    EvaluationDashboardView,
+    load_evaluation_dashboard,
+)
 
 
 def chat(message: str, history: list[dict] | None = None) -> str:
@@ -93,9 +99,59 @@ def admin_gate_markdown(view: KnowledgeAdminView) -> str:
     return f"### Release Gate：`{gate.status}`\n\n{gate.message}\n\n报告路径：`{gate.report_path}`"
 
 
+def dashboard_metric_rows(metrics: tuple[DashboardMetric, ...]) -> list[list[object]]:
+    return [
+        [metric.name, metric.value, metric.sample_count]
+        for metric in metrics
+    ]
+
+
+def dashboard_gate_rows(gates: tuple[DashboardGate, ...]) -> list[list[str]]:
+    return [
+        [
+            gate.name,
+            gate.category,
+            gate.threshold,
+            gate.sample_count,
+            gate.status,
+            gate.reason,
+            gate.evidence_path,
+        ]
+        for gate in gates
+    ]
+
+
+def dashboard_slice_rows(view: EvaluationDashboardView) -> list[list[object]]:
+    return [
+        [
+            item.name,
+            item.source,
+            item.sample_count,
+            item.positive_sample_count,
+            item.recall_at_3,
+            item.answer_accuracy,
+            item.citation_accuracy,
+            item.fallback_accuracy,
+            item.grounded_answer_rate,
+            item.critical_error_rate,
+        ]
+        for item in view.slices
+    ]
+
+
+def dashboard_summary_markdown(view: EvaluationDashboardView) -> str:
+    return (
+        f"## Release Decision：`{view.overall_decision}`\n\n"
+        f"Answer Eval 模式：`{view.answer_mode}` · Live：`{view.live_status}`\n\n"
+        f"Release Gate：{view.release_gate.message}  \n"
+        f"来源：`{view.release_gate.source_path}` · {view.release_gate.generated_at}"
+    )
+
+
 def build_demo() -> gr.Blocks:
 
     admin_view = load_knowledge_admin_view()
+    dashboard_view = load_evaluation_dashboard()
     default_profile = admin_view.profiles[0] if admin_view.profiles else None
 
     with gr.Blocks(
@@ -184,6 +240,59 @@ def build_demo() -> gr.Blocks:
                     interactive=False,
                     label="既有报告明细",
                 )
+
+        with gr.Tab("Evaluation Dashboard"):
+            gr.Markdown(dashboard_summary_markdown(dashboard_view))
+            gr.Markdown("### Hard Gate")
+            gr.Dataframe(
+                headers=["名称", "类别", "阈值", "样本数", "状态", "原因", "证据路径"],
+                value=dashboard_gate_rows(dashboard_view.hard_gates),
+                interactive=False,
+                label="Hard Gate（只读）",
+            )
+            with gr.Accordion("Soft Gate 与报告来源（只读）", open=False):
+                gr.Dataframe(
+                    headers=["名称", "类别", "阈值", "样本数", "状态", "原因", "证据路径"],
+                    value=dashboard_gate_rows(dashboard_view.soft_gates),
+                    interactive=False,
+                    label="Soft Gate",
+                )
+                gr.Markdown(
+                    f"Retrieval：`{dashboard_view.retrieval.source_path}` · "
+                    f"{dashboard_view.retrieval.generated_at}  \n"
+                    f"Answer：`{dashboard_view.answer.source_path}` · "
+                    f"{dashboard_view.answer.generated_at}"
+                )
+            gr.Markdown("### Retrieval Metrics")
+            gr.Dataframe(
+                headers=["指标", "值", "样本数"],
+                value=dashboard_metric_rows(dashboard_view.retrieval_metrics),
+                interactive=False,
+                label="Retrieval Eval",
+            )
+            gr.Markdown("### Answer Metrics")
+            gr.Dataframe(
+                headers=["指标", "值", "样本数"],
+                value=dashboard_metric_rows(dashboard_view.answer_metrics),
+                interactive=False,
+                label="Answer Eval",
+            )
+            gr.Markdown("### Category / Slice Metrics")
+            gr.Dataframe(
+                headers=["名称", "来源", "样本数", "正例数", "Recall@3", "Answer", "Citation", "Fallback", "Grounded", "Critical Error"],
+                value=dashboard_slice_rows(dashboard_view),
+                interactive=False,
+                label="Category / Slice Metrics",
+            )
+            gr.Markdown("### Baseline Comparison")
+            gr.Markdown(
+                f"状态：`{dashboard_view.baseline.status}` · 可用性：`{dashboard_view.baseline.availability}`  \n"
+                f"{dashboard_view.baseline.reason}  \n"
+                f"来源：`{dashboard_view.baseline.source_path}`"
+            )
+            with gr.Accordion("Failed Cases / Known Limitations（只读）", open=False):
+                failed_cases = ", ".join(dashboard_view.failed_case_ids) or "无失败 Case ID。"
+                gr.Markdown(f"失败 Case ID：`{failed_cases}`")
 
     return demo
 
