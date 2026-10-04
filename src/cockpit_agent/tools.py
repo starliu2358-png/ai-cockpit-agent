@@ -68,7 +68,7 @@ def open_left_front_door() -> dict:
 
 @function_tool
 def search_vehicle_manual(query: str) -> dict:
-    """Search the local vehicle manual for instructions, warning lights, or feature explanations."""
+    """Search legacy generic manual text only when no exact Vehicle Profile is available."""
     results = manual_retriever.search(query, top_k=2)
     return {"query": query, "results": results}
 

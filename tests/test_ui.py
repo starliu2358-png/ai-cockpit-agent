@@ -47,3 +47,21 @@ def test_chat_and_mock_vehicle_state_helpers_remain_available() -> None:
     speed, reset_state = ui.reset_state()
     assert speed == 0.0
     assert json.loads(reset_state)["speed_kph"] == 0.0
+
+
+def test_chat_passes_explicit_vehicle_context_to_agent(monkeypatch) -> None:
+    captured: dict[str, object] = {}
+
+    def fake_run_agent(message: str, **kwargs: object) -> str:
+        captured["message"] = message
+        captured.update(kwargs)
+        return "知识回答"
+
+    monkeypatch.setattr(ui, "run_agent", fake_run_agent)
+
+    assert ui.chat("LCC", vehicle_id="alpha_aster_x1_max_v2", include_pre_release=True) == "知识回答"
+    assert captured == {
+        "message": "LCC",
+        "vehicle_id": "alpha_aster_x1_max_v2",
+        "include_pre_release": True,
+    }

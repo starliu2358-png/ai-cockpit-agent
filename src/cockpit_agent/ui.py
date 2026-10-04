@@ -13,16 +13,26 @@ from .vehicle_book.dashboard import (
     EvaluationDashboardView,
     load_evaluation_dashboard,
 )
+from .vehicle_book.registry import VehicleRegistry
 
 
-def chat(message: str, history: list[dict] | None = None) -> str:
+def chat(
+    message: str,
+    history: list[dict] | None = None,
+    vehicle_id: str | None = None,
+    include_pre_release: bool = False,
+) -> str:
     _ = history
 
     if not message.strip():
         return "请输入一句座舱指令。"
 
     try:
-        return run_agent(message)
+        return run_agent(
+            message,
+            vehicle_id=vehicle_id,
+            include_pre_release=include_pre_release,
+        )
     except Exception as exc:  # noqa: BLE001 - UI boundary must render agent failures safely.
         return f"运行失败：{exc}"
 
@@ -152,6 +162,7 @@ def build_demo() -> gr.Blocks:
 
     admin_view = load_knowledge_admin_view()
     dashboard_view = load_evaluation_dashboard()
+    chat_profiles = VehicleRegistry().list_profiles(include_pre_release=True)
     default_profile = admin_view.profiles[0] if admin_view.profiles else None
 
     with gr.Blocks(
@@ -169,14 +180,31 @@ def build_demo() -> gr.Blocks:
         )
 
         with gr.Tab("Cockpit Demo"):
+            gr.Markdown(
+                "本项目为本地模拟，不连接或控制真实车辆。车型/版本知识问答必须先选择 Vehicle Profile。"
+            )
+            with gr.Row():
+                chat_vehicle_selector = gr.Dropdown(
+                    choices=[
+                        (f"{profile.model} {profile.trim} · 软件 {profile.software_version} ({profile.release_status})", profile.vehicle_id)
+                        for profile in chat_profiles
+                    ],
+                    value=None,
+                    label="Vehicle Profile（知识问答必填）",
+                )
+                chat_pre_release = gr.Checkbox(
+                    value=False,
+                    label="显式允许预发布 Profile 查询",
+                )
             gr.ChatInterface(
                 fn=chat,
+                additional_inputs=[chat_vehicle_selector, chat_pre_release],
                 examples=[
-                    "我有点冷，把空调调到23度",
-                    "把主驾座椅加热调到2档",
-                    "胎压报警灯亮了是什么意思？",
-                    "导航到北京南站",
-                    "帮我打开左前门",
+                    ["我有点冷，把空调调到23度", "alpha_aster_x1_max_v1", False],
+                    ["把主驾座椅加热调到2档", "alpha_aster_x1_max_v1", False],
+                    ["胎压报警灯亮了是什么意思？", "alpha_aster_x1_max_v1", False],
+                    ["导航到北京南站", "alpha_aster_x1_max_v1", False],
+                    ["帮我打开左前门", "alpha_aster_x1_max_v1", False],
                 ],
             )
 

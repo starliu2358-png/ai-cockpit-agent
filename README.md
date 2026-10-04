@@ -50,6 +50,10 @@ python -m cockpit_agent.ui
 
 页面包含 `Cockpit Demo` 与 `Knowledge Admin（只读）` Tab。后者按 Vehicle Profile 浏览本地资料的类型、版本、状态和相对来源路径，并只读取既有的 `outputs/release_gate/release_gate_summary.json`；报告不存在时显示 `NOT_RUN`（未运行），不会触发门禁、模型调用或任何内容修改。
 
+`Evaluation Dashboard` Tab 只读取既有的 Retrieval、Answer 和 Release Gate JSON 摘要，展示评测指标、切片样本数、门禁、失败 Case ID 与 Baseline 对比；不会重新运行评测或调用模型。详见 `docs/EVALUATION_DASHBOARD.md`。
+
+Cockpit Demo 的 Vehicle Profile 选择器将显式上下文传入 Vehicle Knowledge Tool，用于车型/版本相关问题；预发布 Profile 需要显式允许。回答保留精简来源引用和资料不足时的 Fallback。控制工具与 Mock Vehicle State 保持独立。详见 `docs/AGENT_VEHICLE_BOOK_INTEGRATION.md`。
+
 Run tests:
 
 ```bash
@@ -91,6 +95,8 @@ Expected result: the tool-side safety guardrail rejects the operation and the do
 - `docs/ARCHITECTURE.md` — system architecture and design decisions
 - `docs/DEMO_SCRIPT.md` — demo scenarios
 - `docs/KNOWLEDGE_ADMIN.md` — read-only knowledge administration view
+- `docs/EVALUATION_DASHBOARD.md` — read-only evaluation dashboard
+- `docs/AGENT_VEHICLE_BOOK_INTEGRATION.md` — controlled Vehicle Book Agent tool
 
 ## Scope
 
