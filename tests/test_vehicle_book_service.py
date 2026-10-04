@@ -227,6 +227,44 @@ def test_service_builds_citations_from_exact_retrieved_objects() -> None:
     ]
 
 
+def test_service_omits_redundant_configuration_citation() -> None:
+    detailed = _evidence()[0]
+    configuration = RetrievedChunk(
+        chunk=KnowledgeChunk(
+            chunk_id="oem_alpha_aster_x1_v1_configuration:summary",
+            section="Configuration",
+            text="Battery capacity: 75 kWh.",
+            metadata=DocumentMetadata(
+                document_id="oem_alpha_aster_x1_v1_configuration",
+                vehicle_id="alpha_aster_x1_max_v1",
+                title="ASTER_X1 v1 Configuration",
+                content_type="configuration",
+                document_version="1.0",
+                source_path=Path(
+                    "data/knowledge/oem_alpha/aster_x1/v1/configuration.md"
+                ),
+                status="published",
+                locale="zh-CN",
+            ),
+        ),
+        score=2.0,
+        rank=2,
+    )
+    result = _service(
+        FakeRetriever((detailed, configuration)),
+        FakeGenerator(
+            _model_response(
+                cited_chunk_ids=[
+                    detailed.chunk.chunk_id,
+                    configuration.chunk.chunk_id,
+                ]
+            )
+        ),
+    ).answer("What is the battery capacity?", "alpha_aster_x1_max_v1")
+
+    assert [citation.chunk_id for citation in result.citations] == [detailed.chunk.chunk_id]
+
+
 def test_no_results_returns_fallback_without_calling_generator() -> None:
     retriever = FakeRetriever(())
     generator = FakeGenerator(_model_response())

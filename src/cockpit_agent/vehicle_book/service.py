@@ -133,7 +133,10 @@ class VehicleBookService:
                 reason="unknown_citation_ids",
             )
 
-        citations = tuple(Citation.from_retrieved(result) for result in matched)
+        citations = tuple(
+            Citation.from_retrieved(result)
+            for result in self._preferred_citation_evidence(matched)
+        )
         return AnswerResult(
             answer=draft.answer,
             vehicle_id=profile.vehicle_id,
@@ -155,6 +158,23 @@ class VehicleBookService:
             evidence=evidence,
             fallback_reason=reason,
         )
+
+    @staticmethod
+    def _preferred_citation_evidence(
+        cited_evidence: tuple[RetrievedChunk, ...],
+    ) -> tuple[RetrievedChunk, ...]:
+        """Prefer detailed source material over a redundant configuration summary.
+
+        Configuration chunks help retrieval and answer generation, but a detailed
+        manual or ADAS section is the more precise provenance when both are cited.
+        Keep configuration evidence when it is the only source the draft selected.
+        """
+        detailed = tuple(
+            result
+            for result in cited_evidence
+            if result.chunk.metadata.content_type != "configuration"
+        )
+        return detailed or cited_evidence
 
     @staticmethod
     def _draft_error_reason(error: AnswerDraftError) -> str:

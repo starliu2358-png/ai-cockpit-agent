@@ -105,6 +105,10 @@ def test_grounded_answerer_returns_validated_json_draft() -> None:
     assert other_profile.chunk.chunk_id not in generator.prompt
     assert "OTHER_PROFILE_SENTINEL" not in generator.prompt
     assert "source_path" not in generator.prompt
+    assert "Answer only what the question asks." in generator.prompt
+    assert "Cover each attribute explicitly requested by the question." in generator.prompt
+    assert "Treat the question as a strict scope boundary." in generator.prompt
+    assert "Use the smallest sufficient set of citations" in generator.prompt
 
 
 @pytest.mark.parametrize(
