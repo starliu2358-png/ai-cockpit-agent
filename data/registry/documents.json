@@ -91,5 +91,57 @@
     "source_path": "data/knowledge/oem_alpha/aster_x2/v1/configuration.md",
     "status": "published",
     "locale": "zh-CN"
+  },
+  {
+    "document_id": "tesla_model3_rwd_cn_charging_2024plus",
+    "vehicle_id": "model3-rwd-cn-current",
+    "title": "Tesla 中国 Model 3 车主手册",
+    "content_type": "owner_manual",
+    "document_version": "2024+",
+    "source_path": "data/knowledge/tesla/model3/cn/2024plus/charging.md",
+    "source_url": "https://www.tesla.cn/ownersmanual/model3/zh_cn/GUID-BEE08D47-0CE0-4BDD-83F2-9854FB3D578F.html",
+    "status": "published",
+    "locale": "zh-CN",
+    "market": "CN",
+    "retrieved_at": "2026-10-09"
+  },
+  {
+    "document_id": "tesla_model3_lr_rwd_cn_charging_2024plus",
+    "vehicle_id": "model3-lr-rwd-cn-current",
+    "title": "Tesla 中国 Model 3 车主手册",
+    "content_type": "owner_manual",
+    "document_version": "2024+",
+    "source_path": "data/knowledge/tesla/model3/cn/2024plus/charging.md",
+    "source_url": "https://www.tesla.cn/ownersmanual/model3/zh_cn/GUID-BEE08D47-0CE0-4BDD-83F2-9854FB3D578F.html",
+    "status": "published",
+    "locale": "zh-CN",
+    "market": "CN",
+    "retrieved_at": "2026-10-09"
+  },
+  {
+    "document_id": "tesla_model3_lr_awd_cn_charging_2024plus",
+    "vehicle_id": "model3-lr-awd-cn-current",
+    "title": "Tesla 中国 Model 3 车主手册",
+    "content_type": "owner_manual",
+    "document_version": "2024+",
+    "source_path": "data/knowledge/tesla/model3/cn/2024plus/charging.md",
+    "source_url": "https://www.tesla.cn/ownersmanual/model3/zh_cn/GUID-BEE08D47-0CE0-4BDD-83F2-9854FB3D578F.html",
+    "status": "published",
+    "locale": "zh-CN",
+    "market": "CN",
+    "retrieved_at": "2026-10-09"
+  },
+  {
+    "document_id": "tesla_model3_performance_cn_charging_2024plus",
+    "vehicle_id": "model3-performance-awd-cn-current",
+    "title": "Tesla 中国 Model 3 车主手册",
+    "content_type": "owner_manual",
+    "document_version": "2024+",
+    "source_path": "data/knowledge/tesla/model3/cn/2024plus/charging.md",
+    "source_url": "https://www.tesla.cn/ownersmanual/model3/zh_cn/GUID-BEE08D47-0CE0-4BDD-83F2-9854FB3D578F.html",
+    "status": "published",
+    "locale": "zh-CN",
+    "market": "CN",
+    "retrieved_at": "2026-10-09"
   }
 ]

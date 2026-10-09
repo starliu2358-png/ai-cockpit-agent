@@ -35,7 +35,21 @@ def test_dashboard_helpers_preserve_metrics_and_day_8_admin_data() -> None:
     admin = load_knowledge_admin_view()
 
     assert ui.dashboard_metric_rows(dashboard.retrieval_metrics)[0][0] == "Recall@K"
-    assert ui.dashboard_slice_rows(dashboard)
+    assert ui.dashboard_slice_rows(dashboard) == [
+        [
+            item.name,
+            item.source,
+            item.sample_count,
+            item.positive_sample_count,
+            item.recall_at_3,
+            item.answer_accuracy,
+            item.citation_accuracy,
+            item.fallback_accuracy,
+            item.grounded_answer_rate,
+            item.critical_error_rate,
+        ]
+        for item in dashboard.slices
+    ]
     assert ui.admin_document_rows(admin, admin.profiles[0].vehicle_id)
 
 

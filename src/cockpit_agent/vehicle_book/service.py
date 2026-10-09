@@ -6,6 +6,7 @@ from .answerer import (
     AnswerDraft,
     AnswerDraftError,
     DeepSeekAnswerGenerator,
+    EvidenceAnswerer,
     GroundedAnswerer,
 )
 from .registry import RegistryError, VehicleRegistry
@@ -48,9 +49,16 @@ class VehicleBookService:
         self.retriever = retriever or VehicleBookRetriever(
             vehicle_registry=self.vehicle_registry
         )
-        self.answerer = answerer or GroundedAnswerer(
-            DeepSeekAnswerGenerator.from_env()
-        )
+        self.answerer = answerer or self._default_answerer()
+
+    @staticmethod
+    def _default_answerer() -> DraftAnswerer:
+        try:
+            return GroundedAnswerer(DeepSeekAnswerGenerator.from_env())
+        except ValueError as exc:
+            if "DEEPSEEK_API_KEY" not in str(exc):
+                raise
+            return EvidenceAnswerer()
 
     def answer(
         self,

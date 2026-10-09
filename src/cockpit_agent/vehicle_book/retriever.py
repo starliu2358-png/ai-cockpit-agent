@@ -96,8 +96,8 @@ class VehicleBookRetriever:
     def _profile_context_tokens(cls, profile: VehicleProfile) -> frozenset[str]:
         model = profile.model
         software_version = profile.software_version
-        values = [model, software_version, profile.oem, profile.trim]
-        version_numbers = re.findall(r"\d+", software_version)
+        values = [value for value in (model, software_version, profile.oem, profile.trim) if value]
+        version_numbers = re.findall(r"\d+", software_version or "")
         if version_numbers:
             values.append(f"v{version_numbers[0]}")
             values.append(f"v{software_version}")

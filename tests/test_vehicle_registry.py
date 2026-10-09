@@ -41,8 +41,12 @@ def test_pre_release_profiles_are_hidden_by_default() -> None:
     assert {item.vehicle_id for item in registry.list_profiles()} == {
         "alpha_aster_x1_max_v1",
         "alpha_aster_x2_max_v1",
+        "model3-rwd-cn-current",
+        "model3-lr-rwd-cn-current",
+        "model3-lr-awd-cn-current",
+        "model3-performance-awd-cn-current",
     }
-    assert len(registry.list_profiles(include_pre_release=True)) == 3
+    assert len(registry.list_profiles(include_pre_release=True)) == 7
 
 
 def test_document_registry_links_three_existing_sources_per_vehicle() -> None:

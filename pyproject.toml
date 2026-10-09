@@ -9,9 +9,11 @@ description = "A lightweight AI cockpit agent demo with tool calling, manual RAG
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+  "fastapi>=0.115",
   "openai-agents",
   "gradio>=5",
   "python-dotenv>=1.0",
+  "uvicorn>=0.34",
 ]
 
 [project.optional-dependencies]

@@ -70,6 +70,9 @@ def vehicle_knowledge_result(
                 "document_version": citation.document_version,
                 "vehicle_id": citation.vehicle_id,
                 "source_path": citation.source_path.as_posix(),
+                "source_url": citation.source_url,
+                "market": citation.market,
+                "retrieved_at": citation.retrieved_at,
             }
             for citation in result.citations
         ],

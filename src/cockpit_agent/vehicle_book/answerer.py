@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -65,6 +66,32 @@ class AnswerDraft:
     answer: str
     cited_chunk_ids: tuple[str, ...]
     insufficient_evidence: bool
+
+
+class EvidenceAnswerer:
+    """Provide a deterministic, citation-backed answer when no model key is configured."""
+
+    def generate_draft(
+        self,
+        vehicle_id: str,
+        question: str,
+        evidence: tuple[RetrievedChunk, ...],
+    ) -> AnswerDraft:
+        if not vehicle_id.strip() or not question.strip():
+            raise ValueError("vehicle_id and question must be non-empty")
+        if not evidence:
+            raise AnswerDraftError("At least one evidence chunk is required")
+        selected = evidence[0]
+        if selected.chunk.metadata.vehicle_id != vehicle_id:
+            raise AnswerDraftError("Evidence contains a chunk for a different vehicle")
+
+        lines = selected.chunk.text.splitlines()
+        answer = "\n".join(re.sub(r"^#{1,6}\s+", "", line) for line in lines).strip()
+        return AnswerDraft(
+            answer=answer,
+            cited_chunk_ids=(selected.chunk.chunk_id,),
+            insufficient_evidence=False,
+        )
 
 
 class GroundedAnswerer:
