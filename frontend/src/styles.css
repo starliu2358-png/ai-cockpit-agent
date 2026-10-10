@@ -178,27 +178,6 @@ textarea:focus-visible {
   background: #f8fbfd;
 }
 
-.scope-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  padding: 12px;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-.scope-note span {
-  color: var(--accent);
-}
-
-.scope-note p {
-  margin: 0;
-}
-
 .inline-error {
   padding: 12px;
   color: var(--danger);
@@ -775,8 +754,7 @@ textarea:focus-visible {
     margin-top: 12px;
   }
 
-  .suggestion-section .eyebrow,
-  .scope-note {
+  .suggestion-section .eyebrow {
     display: none;
   }
 

@@ -153,6 +153,16 @@ describe("车书 AI", () => {
     expect(screen.getByPlaceholderText(/询问 Model 3/)).toBeEnabled();
   });
 
+  it("does not show the removed vehicle-control scope card", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response(vehicles)));
+    render(<App />);
+
+    await screen.findByRole("option", { name: "后轮驱动版" });
+    expect(
+      screen.queryByText("本产品不控制车辆，也不读取电量、位置或车速等实时状态。"),
+    ).not.toBeInTheDocument();
+  });
+
   it("shows a recoverable API error", async () => {
     vi.stubGlobal(
       "fetch",

@@ -174,10 +174,6 @@ function App() {
             </section>
           </div>
 
-          <div className="scope-note">
-            <span aria-hidden="true">ⓘ</span>
-            <p>本产品不控制车辆，也不读取电量、位置或车速等实时状态。</p>
-          </div>
         </aside>
 
         <main className="conversation">
